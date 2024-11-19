@@ -1,4 +1,4 @@
-
+(setq package-enable-at-startup nil);;needed by using straight.el
 (set-face-attribute 'default nil
                     :background "#212337"  ; 设置背景色
                     :foreground "#1e2030") ; 设置前景色

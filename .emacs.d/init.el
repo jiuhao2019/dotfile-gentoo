@@ -62,19 +62,59 @@
       '(("http" . "127.0.0.1:7890")
         ("https" . "127.0.0.1:7890")))
 ;;------------------------------------------------------------------------------------------------use-package
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; (package-initialize)
+;; (unless package-archive-contents
+;;   (package-refresh-contents))
 
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-(require 'use-package)
+;; (unless (package-installed-p 'use-package)
+;;   (package-install 'use-package))
+;; (require 'use-package)
+
+
+
+;;(defvar bootstrap-version)
+;;(let ((bootstrap-file
+;;       (expand-file-name
+;;        "straight/repos/straight.el/bootstrap.el"
+;;        (or (bound-and-true-p straight-base-dir)
+;;            user-emacs-directory)))
+;;      (bootstrap-version 7))
+;;  (unless (file-exists-p bootstrap-file)
+;;    (with-current-buffer
+;;        (url-retrieve-synchronously
+;;         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+;;         'silent 'inhibit-cookies)
+;;      (goto-char (point-max))
+;;      (eval-print-last-sexp)))
+;;  (load bootstrap-file nil 'nomessage))
+;;
+;;(straight-use-package 'use-package)
+;;(setq straight-use-package-by-default t)
+;;(setq use-package-always-ensure t)
+;;(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)) ; 自定义插件配置路径
+
+
+
+;; 安装 straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-url "https://github.com/raxod502/straight.el"))
+  (unless (file-exists-p bootstrap-file)
+    (url-copy-file bootstrap-url bootstrap-file t))
+  (load bootstrap-file nil t))
+
+;; 配置插件安装
+(straight-use-package 'use-package)
+
+(setq straight-use-package-by-default t)
 (setq use-package-always-ensure t)
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)) ; 自定义插件配置路径
 ;;------------------------------------------------------------------------------------------------font-ligature
-(use-package ligature)
+(use-package ligature
+ :straight t)
 (global-ligature-mode t)
 ;; 为所有编程模式启用 ligatures
 (ligature-set-ligatures 'prog-mode
@@ -86,10 +126,10 @@
 (add-hook 'prog-mode-hook #'ligature-mode) ; 仅在编程模式中启用
 
 ;;-----------------------------------------------------------------------------------折叠块,vimish-fold,可以选中再折叠
-(use-package vimish-fold
+(use-package vimish-fold :straight t
   :hook (prog-mode . vimish-fold-mode))
 ;;------------------------------------------------------------------------------------theme
-(use-package doom-themes
+(use-package doom-themes :straight t
   :config
   (load-theme 'doom-moonlight t)              ;; 加载 doom-moonlight 主题
   (doom-themes-visual-bell-config)            ;; 视觉铃声
@@ -97,7 +137,7 @@
   (setq doom-themes-enable-bold t             ;; 启用粗体
         doom-themes-enable-italic t))         ;; 启用斜体
 ;;-----------------------------------------------------------------------------------modeline
-(use-package doom-modeline
+(use-package doom-modeline :straight t
   :ensure t
   :init (doom-modeline-mode 1)
   :custom
@@ -117,17 +157,17 @@
 (require 'user-org)
 (require 'user-lsp)
 ;;-------------------------------------------------------------------------------------使能加密
-(use-package epa-file
+(use-package epa-file :straight t
   :ensure nil
   :config
   (epa-file-enable)) 
 ;;--------------------------------------------------------------------------------让用户输入的密码不会因内存不足而换出到磁盘
-(use-package pinentry
+(use-package pinentry :straight t
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 ;;----------------------------------------------------------------------------------------undo-tree
-(use-package undo-tree
+(use-package undo-tree :straight t
   :config (global-undo-tree-mode)
   :custom (undo-tree-visualizer-diff t)
   (undo-tree-history-directory-alist '(("." . "~/undo-emacs")))
