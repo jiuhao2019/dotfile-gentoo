@@ -1,0 +1,12 @@
+--style=allman 
+--align-pointer=name 
+--align-reference=name 
+--indent=spaces=4 
+--indent-cases 
+--indent-col1-comments 
+--break-after-logical 
+--unpad-paren 
+--pad-oper 
+--pad-header 
+--suffix=none
+
