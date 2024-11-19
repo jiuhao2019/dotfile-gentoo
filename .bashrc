@@ -16,7 +16,6 @@ fi
 
 
 # Put your fun stuff here.
-alias ls='ls --color=never'
 alias grep='grep --color=auto'
 
 eval "$(fzf --bash)"
@@ -26,6 +25,7 @@ export FZF_ALT_C_OPTS="--preview 'ls -1 --file-type --group-directories-first {}
 
 alias l='ls -lha --file-type --group-directories-first'
 alias ll='ls -1 --file-type --group-directories-first'
+alias ls='ls --file-type --color=never'
 alias ..='cd ..'
 alias mv='mv -i'
 alias rm='rm -irv'
