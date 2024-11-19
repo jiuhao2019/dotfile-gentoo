@@ -21,14 +21,11 @@ alias grep='grep --color=auto'
 
 eval "$(fzf --bash)"
 # Print tree structure in the preview window
-export FZF_ALT_C_OPTS="
-  --walker-skip .git,node_modules,target
-  --preview 'tree -L 1 -d -C {}'"
+export FZF_ALT_C_COMMAND="ls -d */ | sort"
+export FZF_ALT_C_OPTS="--preview 'ls -1 --file-type --group-directories-first {}' --height 40% --reverse"
 
 alias l='ls -lha --file-type --group-directories-first'
 alias ll='ls -1 --file-type --group-directories-first'
 alias ..='cd ..'
-alias pcmu='sudo pacman -Syu'
-alias pru='paru -Syu'
 alias mv='mv -i'
 alias rm='rm -irv'
