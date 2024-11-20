@@ -1,0 +1,221 @@
+#leader use win key
+set $mod Mod4
+
+gaps inner 23
+gaps outer 0
+
+#非bar栏里的其他区域字体
+font pango: FiraCode Nerd Font Mono,bold medium 13
+
+# focus_follows_mouse yes|no
+focus_follows_mouse no
+
+# popup_during_fullscreen smart|ignore|leave_fullscreen
+popup_during_fullscreen smart
+
+#workspace_auto_back_and_forth yes|no
+workspace_auto_back_and_forth yes
+
+# hide_edge_borders none|vertical|horizontal|both|smart
+hide_edge_borders both
+
+# workspace_layout <default|stacking|tabbed>
+workspace_layout tabbed
+
+#边框粗细                                    
+# default_border normal|none|pixel
+# default_floating_border normal|none|pixel
+default_border pixel 0
+default_floating_border pixel 0
+
+# 浮动窗口切换前置键
+floating_modifier $mod
+floating_minimum_size 75 x 50
+floating_maximum_size -1 x -1
+
+# title_align left|center|right
+title_align center
+# 开机随i3启动                      
+
+#exec --no-startup-id opensnitch-ui&
+exec --no-startup-id VBoxClient-all
+exec --no-startup-id VBoxClient -vf --vmsvga
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s off
+exec --no-startup-id ibus-daemon -rxRd
+exec --no-startup-id dunst -conf ~/.config/dunst/dunstrc
+exec --no-startup-id clash&
+#exec --no-startup-id ~/.config/i3/autoload.sh
+exec --no-startup-id wezterm
+
+bindsym Caps_Lock --release exec --no-startup-id dunstify "CapsLock: `xset q | sed -n 's/^.*Caps Lock:\s*\(\S*\).*$/\1/p'`" -t 1500 -r 6 -u low
+
+# switch/iterate between workspaces
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
+
+#change focus
+bindsym $mod+h focus left
+bindsym $mod+l focus right
+bindsym $mod+k focus up
+bindsym $mod+j focus down
+
+#move focus
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+l move right
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+j move down
+
+# split in horizontal orientation is default
+# split in vertical orientation
+bindsym $mod+v split v
+#full screen toggle
+bindsym $mod+f fullscreen toggle
+#如果偶然出现不能切换到输入中文状态，就重置ibus
+bindsym $mod+b exec --no-startup-id ibus-daemon -drx
+#change focus between tiling or floating
+bindsym $mod+i focus mode_toggle
+bindsym $mod+Shift+i floating toggle
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+x layout toggle
+bindsym $mod+Shift+r restart
+bindsym $mod+q kill
+bindsym $mod+d exec --no-startup-id rofi -show drun
+bindsym $mod+t exec --no-startup-id rofi -show window
+bindsym $mod+Return exec --no-startup-id wezterm
+bindsym $mod+e exec --no-startup-id emacs
+bindsym $mod+n exec --no-startup-id pcmanfm
+#声音大小调整
+bindsym $mod+y exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym $mod+u exec  pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym $mod+m exec  pactl set-sink-mute @DEFAULT_SINK@ toggle
+# 使当前聚焦的窗口成为便笺簿
+bindsym $mod+Shift+c move scratchpad
+# 显示第一个便笺簿窗口
+bindsym $mod+c scratchpad show
+
+#默认锁屏幕方式
+bindsym $mod+o exec --no-startup-id i3lock
+
+#修改窗口大小
+set $resize [h]width- [l]width+ [j]height- [k]height+
+mode "$resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym j resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+        bindsym Escape mode "default"
+}
+bindsym $mod+r mode "$resize"
+
+# 打开app自动聚焦其窗口上
+#for_window [class="Emacs" floating_from="user"] resize set 2040 1280,move left 595px,move up 315px
+for_window [class="Thunar"] focus;layout splith
+for_window [class="vlc"] focus;layout splith
+for_window [class="Eog"] focus;layout splith
+for_window [class="libreoffice"] focus;layout splith
+
+# 设置某些app打开后窗口默认是浮动的,比如小弹窗
+for_window [class="Qalculate-gtk" instance="qalculate-gtk"] floating enable
+for_window [class="qt5ct" instance="qt5ct"] floating enable
+for_window [window_role="About"] floating enable
+
+#打开app自动将其窗口放置在第x号容器
+assign [class="Thunar"] $ws2
+assign [class="Eog"] $ws2
+assign [class="vlc"] $ws3
+assign [class="libreoffice"] $ws3
+
+#设置容器title
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10"10"
+
+#切换到第x号容器
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+10 workspace $ws10
+
+#将当前窗口移动到其他容器
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+10 move container to workspace $ws10
+
+#child_border:client.focused    <-  border color
+
+############
+# dracular #
+############
+# class                 border  bground text    indicator child_border
+client.focused          #6272A4 #6272A4 #F8F8F2 #6272A4   #6272A4
+client.focused_inactive #44475A #44475A #F8F8F2 #44475A   #44475A
+client.unfocused        #282A36 #282A36 #BFBFBF #282A36   #282A36
+client.urgent           #44475A #FF5555 #F8F8F2 #FF5555   #FF5555
+client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
+client.background       #F8F8F2
+
+bar {
+    i3bar_command i3bar
+    height 21
+
+    # bar栏里的区域字体
+    font pango: FiraCode Nerd Font Mono,bold medium 13
+
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
+
+    # bar位置
+    # position top|bottom
+    position bottom
+
+    # mode dock|hide|invisible
+    mode hide
+
+    # hidden_state hide|show
+    hidden_state hide
+
+    # tray_output none|primary|<output>
+    # tray_output primary
+    tray_padding 0
+
+    # 显示/隐藏容器title
+    # workspace_buttons yes|no
+    workspace_buttons yes
+
+    workspace_min_width 88
+
+    # 容器title不显示序号
+    strip_workspace_numbers yes
+
+    colors {
+       background #282A36
+       statusline #F8F8F2
+       separator  #44475A
+
+       focused_workspace  #44475A #44475A #F8F8F2
+       active_workspace   #282A36 #44475A #F8F8F2
+       inactive_workspace #282A36 #282A36 #BFBFBF
+       urgent_workspace   #FF5555 #FF5555 #F8F8F2
+       binding_mode       #FF5555 #FF5555 #F8F8F2
+    }
+}
