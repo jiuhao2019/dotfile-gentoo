@@ -3,11 +3,9 @@
       '(("http" . "127.0.0.1:7890")
         ("https" . "127.0.0.1:7890")))
 ;;------------------------------------------------------staight.el
-(setq comp-deferred-compilation t)
-
+(setq comp-deferred-compilation t);; 推迟编译，Emacs 启动时可以减少一些编译过程，从而加速启动时间，尤其是当你有很多包时。
 (setq straight-use-package-by-default t)
-(setq straight-emacsmirror-use-mirror t)
-(setq debug-on-error t)
+(setq straight-emacsmirror-use-mirror t);;straight优先用社区提供的git仓库镜像源
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -26,8 +24,6 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
-(require 'use-package)
-(setq use-package-always-ensure t) ;; Automatically install missing packages
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -55,8 +51,7 @@
   (tooltip-mode -1) ;;disables help in a pop-up window
   (set-fringe-mode 10)          
   (column-number-mode -1)     ;不显示列号
-  (global-eldoc-mode -1)      ;不在modeline显示光标处代码相关信息
-  )
+  (global-eldoc-mode -1))      ;不在modeline显示光标处代码相关信息
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)        ; 禁用启动消息
 (setq inhibit-startup-screen t)         ; 禁用启动界面
@@ -70,7 +65,7 @@
 (setq gc-cons-threshold most-positive-fixnum) ;; 只在空闲时进行 GC ，最大程度避免 GC 停顿导致的卡顿
 ;; 从子进程一次读取的最大字节数，默认是 4K ，对于使用 JSON 通信的 LSP 协议来说，太小了
 ;; 调大这个值可以减少系统调用次数
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
+(setq read-process-output-max (* 1024 1024)) ;; 1Mb
 (setq warning-minimum-level :error)  ;; 只显示错误，忽略警告
 (setopt
  use-file-dialog nil
@@ -113,7 +108,8 @@
       auto-save-timeout 30              ; 每x秒自动保存
       auto-save-interval 30)            ; 每输入x个字符自动保存
 ;;---------------------------------------------------------------------------theme
-(use-package doom-themes :straight t
+(use-package doom-themes
+  :straight t
   :config
   (load-theme 'doom-moonlight t)              ;; 加载 doom-moonlight 主题
   (doom-themes-visual-bell-config)            ;; 视觉铃声
@@ -121,7 +117,8 @@
   (setq doom-themes-enable-bold t             ;; 启用粗体
         doom-themes-enable-italic t))         ;; 启用斜体
 ;;---------------------------------------------------------------------------modeline
-(use-package doom-modeline :straight t
+(use-package doom-modeline
+  :straight t
   :ensure t
   :init (doom-modeline-mode 1)
   :custom
@@ -219,7 +216,7 @@
 ;; (先光标放在一个模块里的首括号上,然后C-c C-q自动缩进elisp)
 (use-package aggressive-indent 
   :straight t
-  :hook ( emacs-lisp-mode-hook . aggressive-indent-mode ))
+  :hook ( emacs-lisp-mode . aggressive-indent-mode ))
 ;;----------------------------------------------------------------------格式化代码
 (use-package format-all 
   :straight t
@@ -378,5 +375,4 @@
 (require 'user-keybind)
 
 ;;--------------------------------------------------------- 这段代码放在最后, 加载 Emacs 自动设置的变量
-(when (file-exists-p custom-file)
-  (load custom-file))
+(load custom-file)

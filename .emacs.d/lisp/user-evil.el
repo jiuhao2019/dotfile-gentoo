@@ -6,10 +6,9 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-i-jump nil)
-  ;;默认从插入模式返回后会自动退一个位置，禁用此默认
-  (setq evil-move-cursor-back nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (setq evil-search-wrap nil));; 禁用搜索结果循环
 
 (use-package evil-collection :straight t
   :after evil
