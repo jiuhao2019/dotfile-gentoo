@@ -50,7 +50,7 @@ execute pathogen#infect()
 let g:netrw_browse_split = 4  " 打开文件在一个新的窗口
 let g:netrw_altv = 1          " 打开文件时使用竖向分割
 let g:netrw_winsize = 25      " 设置窗口大小
-let g:netrw_liststyle = 3     " 设置显示风格
+let g:netrw_liststyle = 0     " 设置显示风格
 let g:netrw_banner = 0        " 不显示顶部提示信息
 
 "----------------------------------------colorscheme
