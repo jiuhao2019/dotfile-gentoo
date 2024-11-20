@@ -1,4 +1,77 @@
-;;------------------------------------------------------------------base opt
+;;------------------------------------------------------proxy
+(setq url-proxy-services
+      '(("http" . "127.0.0.1:7890")
+        ("https" . "127.0.0.1:7890")))
+;;------------------------------------------------------staight.el
+(setq comp-deferred-compilation t)
+
+(setq straight-use-package-by-default t)
+(setq straight-emacsmirror-use-mirror t)
+(setq debug-on-error t)
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://radian-software.github.io/straight.el/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
+(require 'use-package)
+(setq use-package-always-ensure t) ;; Automatically install missing packages
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;;---------------------------------------------------------Language Environment
+(set-language-environment "UTF-8")
+;;---------------------------------------------------------System Coding
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq bookmark-save-flag 1);;自动保存bookmark，内置插件
+(add-hook 'prog-mode-hook #'hs-minor-mode);;折叠块(注释，大括号)，内置插件
+;;------------------------------------------------------------------------------------------------font
+(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 133)
+(set-fontset-font t 'unicode (font-spec :family "FiraCode Nerd Font Mono" :size 15) nil 'prepend)
+(set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
+(set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
+;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
+;;-------------------------------------------------------------------------------------------------window-gui
+;; Turn off mouse interface early in startup to avoid momentary display
+(when window-system
+  (menu-bar-mode -1) ;;disables menu bar
+  (tool-bar-mode -1) ;;disables toolbar
+  (scroll-bar-mode -1) ;;disables scroll bar
+  (tooltip-mode -1) ;;disables help in a pop-up window
+  (set-fringe-mode 10)          
+  (column-number-mode -1)     ;不显示列号
+  (global-eldoc-mode -1)      ;不在modeline显示光标处代码相关信息
+  )
+(setq initial-scratch-message "")
+(setq inhibit-startup-message t)        ; 禁用启动消息
+(setq inhibit-startup-screen t)         ; 禁用启动界面
+(setq inhibit-startup-echo-area-message t) ; 禁用 echo 区的提示信息
+(setq initial-scratch-message nil)      ; 清空 *scratch* 缓冲区的默认消息
+(setq initial-buffer-choice t)
+(setq inhibit-default-init t)  ; 禁止加载默认初始化文件
+(setq-default message-log-max nil) ; 禁止记录启动信息到 *Messages*
+(setq garbage-collection-messages nil)  ; 禁用 GC 信息输出
+(setq-default frame-title-format "") ; 移除窗口标题中的初始化信息
+(setq gc-cons-threshold most-positive-fixnum) ;; 只在空闲时进行 GC ，最大程度避免 GC 停顿导致的卡顿
+;; 从子进程一次读取的最大字节数，默认是 4K ，对于使用 JSON 通信的 LSP 协议来说，太小了
+;; 调大这个值可以减少系统调用次数
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+(setq warning-minimum-level :error)  ;; 只显示错误，忽略警告
 (setopt
  use-file-dialog nil
  use-dialog-box nil
@@ -23,19 +96,7 @@
  minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
  redisplay-skip-fontification-on-input t
  cursor-in-non-selected-windows nil)
-(setq warning-minimum-level :error)  ;; 只显示错误，忽略警告
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory));; 把Emacs自动添加的代码放到 custom.el
-;; Language Environment
-(set-language-environment "UTF-8")
-;; System Coding
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(setq bookmark-save-flag 1);;自动保存bookmark，内置插件
-(add-hook 'prog-mode-hook #'hs-minor-mode);;折叠块(注释，大括号)，内置插件
-;;-------------------------------------------------------------------------------------------自动备份
+;;----------------------------------------------------------------------------------自动备份
 ;;put auto-backup-file all to one folder
 (defvar --backup-directory (concat user-emacs-directory "backups"))
 (if (not (file-exists-p --backup-directory))
@@ -51,84 +112,7 @@
       auto-save-default t               ; auto-save every buffer that visits a file
       auto-save-timeout 30              ; 每x秒自动保存
       auto-save-interval 30)            ; 每输入x个字符自动保存
-;;------------------------------------------------------------------------------------------------font
-(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 133)
-(set-fontset-font t 'unicode (font-spec :family "FiraCode Nerd Font Mono" :size 15) nil 'prepend)
-(set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
-(set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
-;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
-;;------------------------------------------------------------------------------------------------proxy
-(setq url-proxy-services
-      '(("http" . "127.0.0.1:7890")
-        ("https" . "127.0.0.1:7890")))
-;;------------------------------------------------------------------------------------------------use-package
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; (package-initialize)
-;; (unless package-archive-contents
-;;   (package-refresh-contents))
-
-;; (unless (package-installed-p 'use-package)
-;;   (package-install 'use-package))
-;; (require 'use-package)
-
-
-
-;;(defvar bootstrap-version)
-;;(let ((bootstrap-file
-;;       (expand-file-name
-;;        "straight/repos/straight.el/bootstrap.el"
-;;        (or (bound-and-true-p straight-base-dir)
-;;            user-emacs-directory)))
-;;      (bootstrap-version 7))
-;;  (unless (file-exists-p bootstrap-file)
-;;    (with-current-buffer
-;;        (url-retrieve-synchronously
-;;         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-;;         'silent 'inhibit-cookies)
-;;      (goto-char (point-max))
-;;      (eval-print-last-sexp)))
-;;  (load bootstrap-file nil 'nomessage))
-;;
-;;(straight-use-package 'use-package)
-;;(setq straight-use-package-by-default t)
-;;(setq use-package-always-ensure t)
-;;(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)) ; 自定义插件配置路径
-
-
-
-;; 安装 straight.el
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-url "https://github.com/raxod502/straight.el"))
-  (unless (file-exists-p bootstrap-file)
-    (url-copy-file bootstrap-url bootstrap-file t))
-  (load bootstrap-file nil t))
-
-;; 配置插件安装
-(straight-use-package 'use-package)
-
-(setq straight-use-package-by-default t)
-(setq use-package-always-ensure t)
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)) ; 自定义插件配置路径
-;;------------------------------------------------------------------------------------------------font-ligature
-(use-package ligature
- :straight t)
-(global-ligature-mode t)
-;; 为所有编程模式启用 ligatures
-(ligature-set-ligatures 'prog-mode
-                        '("==" "===" "!=" "!=="
-                          "->" "=>" "<-" "<="
-                          ">=" "<->" "&&" "||" "!!"
-                          "**" "***" "++" "--" "<<" ">>"
-                          "::" ":::" "===" "=/="))
-(add-hook 'prog-mode-hook #'ligature-mode) ; 仅在编程模式中启用
-
-;;-----------------------------------------------------------------------------------折叠块,vimish-fold,可以选中再折叠
-(use-package vimish-fold :straight t
-  :hook (prog-mode . vimish-fold-mode))
-;;------------------------------------------------------------------------------------theme
+;;---------------------------------------------------------------------------theme
 (use-package doom-themes :straight t
   :config
   (load-theme 'doom-moonlight t)              ;; 加载 doom-moonlight 主题
@@ -136,7 +120,7 @@
   (doom-themes-org-config)                    ;; org-mode 配色增强
   (setq doom-themes-enable-bold t             ;; 启用粗体
         doom-themes-enable-italic t))         ;; 启用斜体
-;;-----------------------------------------------------------------------------------modeline
+;;---------------------------------------------------------------------------modeline
 (use-package doom-modeline :straight t
   :ensure t
   :init (doom-modeline-mode 1)
@@ -149,50 +133,78 @@
   (doom-modeline-lsp t)                          ;; 显示 LSP 状态
   (doom-modeline-github t)                       ;; 显示 GitHub 状态
   (doom-modeline-env-version t))                 ;; 显示当前环境版本
-;;------------------------------------------－－－－－－－－－－－－－－－－－－－－－－－配置内容很多的插件放在独立文件里
+;;---------------------------------------------------------------------------配置内容很多的插件放在独立文件里
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (setq evil-want-C-u-scroll t)
 (require 'user-evil)
 (require 'user-ivy)
 (require 'user-func)
 (require 'user-org)
 (require 'user-lsp)
-;;-------------------------------------------------------------------------------------使能加密
-(use-package epa-file :straight t
-  :ensure nil
-  :config
-  (epa-file-enable)) 
-;;--------------------------------------------------------------------------------让用户输入的密码不会因内存不足而换出到磁盘
+;;----------------------------------------------------------------------------font-ligature
+(use-package ligature
+ :straight t)
+;; 为所有编程模式启用 ligatures
+(ligature-set-ligatures 'prog-mode
+                        '("==" "===" "!=" "!=="
+                          "->" "=>" "<-" "<="
+                          ">=" "<->" "&&" "||" "!!"
+                          "**" "***" "++" "--" "<<" ">>"
+                          "::" ":::" "===" "=/="))
+(add-hook 'prog-mode-hook #'ligature-mode) ; 仅在编程模式中启用
+;;-----------------------------------------------------------------------------all-the-icons
+;;M-x all-the-icons-install-fonts
+(use-package all-the-icons)
+(use-package all-the-icons-dired
+  :requires all-the-icons
+  :hook (dired-mode . all-the-icons-dired-mode))
+;;----------------------------------------------------------------------------折叠块,vimish-fold,可以选中再折叠
+(use-package vimish-fold :straight t
+  :hook (prog-mode . vimish-fold-mode))
+;;----------------------------------------------------------------------------使能加密,内置插件
+(require 'epa-file)
+(epa-file-enable)
+(setq epa-file-encrypt-to '("jiuhao")) ; 将 <your-key-id> 替换为您的 GPG 公钥 ID
+(setq epa-file-select-keys nil) ; 如果您想在加密时不手动选择密钥
+(setq epa-file-cache-passphrase-for-symmetric-encryption t) ; 缓存对称加密的密码
+;;----------------------------------------------------------------------------让用户输入的密码不会因内存不足而换出到磁盘
 (use-package pinentry :straight t
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
-;;----------------------------------------------------------------------------------------undo-tree
+;;-----------------------------------------------------------------------------undo-tree
 (use-package undo-tree :straight t
   :config (global-undo-tree-mode)
   :custom (undo-tree-visualizer-diff t)
   (undo-tree-history-directory-alist '(("." . "~/undo-emacs")))
   (undo-tree-visualizer-timestamps t))
-;;---------------------------------------------------------------------------------------最近打开文件
-(use-package recentf
-  :config
-  (setq recentf-max-saved-items 100)
-  (recentf-mode 1))
-;;--------------------------------------------------------------------------------------文件夹浏览
-(use-package dired
-  :ensure nil  ;;dired已经内置了，无需安装，只让use-package配置他
-  :hook (dired-mode . dired-hide-details-mode)
-  :custom
-  (dired-dwim-target t)
-  (dired-listing-switches "-alGhv --group-directories-first")
-  (dired-recursive-copies 'always)
-  (setq dired-recursive-deletes 'always)
-  (dired-kill-when-opening-new-dired-buffer t))
-;;----------------------------------------------------------------------------------------拼音输入
-(use-package pyim)
-(use-package pyim-basedict)
+;;------------------------------------------------------------------------------recentf,内置插件
+(require 'recentf)
+(recentf-mode 1)
+;; 设置最大保存的文件数
+(setq recentf-max-saved-items 100)
+;; 忽略某些文件和目录
+(setq recentf-exclude
+      '("/tmp/" "/ssh:" "/sudo:" "\\.gz$" "\\.zip$" "\\.tar$"))
+;; 保存 recentf 列表到指定文件
+(setq recentf-save-file "~/.emacs.d/recentf")
+;;-------------------------------------------------------------------------------文件夹浏览
+(require 'dired)
+(setq dired-dwim-target t)
+(setq dired-listing-switches "-alGhv --group-directories-first")
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq dired-kill-when-opening-new-dired-buffer t)
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
+;;--------------------------------------------------------------------------------拼音输入
+(use-package pyim 
+ :straight t)
+(use-package pyim-basedict 
+ :straight t)
 (require 'pyim-cregexp-utils)
 ;; 使用 popup
-(use-package popon)
+(use-package popon 
+ :straight t)
 (setq pyim-page-tooltip 'popon)
 ;; 加载 basedict 拼音词库。
 (pyim-basedict-enable)
@@ -203,12 +215,14 @@
 (setq pyim-page-length 5)
 ;; 设置 pyim 默认使用的输入法策略。
 (pyim-default-scheme 'quanpin)
-
+;;----------------------------------------------------------------------elisp indent
 ;; (先光标放在一个模块里的首括号上,然后C-c C-q自动缩进elisp)
-(use-package aggressive-indent
-  :hook ( emacs-lisp-mode . aggressive-indent-mode ))
-;;------------------------------------------------------------------------------------------格式化代码
-(use-package format-all
+(use-package aggressive-indent 
+  :straight t
+  :hook ( emacs-lisp-mode-hook . aggressive-indent-mode ))
+;;----------------------------------------------------------------------格式化代码
+(use-package format-all 
+  :straight t
   :commands format-all-mode
   :hook (prog-mode . format-all-mode)
   :config
@@ -216,23 +230,27 @@
   (setq-default format-all-formatters
                 '(("C"     (astyle "--mode=c"))
                   ("Shell" (shfmt "-i" "4" "-ci")))))
-;;----------------------------------------------------------------------------------方便跳转，系统需要安装global
-(use-package ggtags )
+;;--------------------------------------------------------------------方便跳转，系统需要安装global
+(use-package ggtags 
+  :straight t)
 (add-hook 'c-mode-common-hook
           (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode)
               (ggtags-mode 1))))
-;;---------------------------------------------------------------------------------高亮光标处单词，手动高亮单词
+;;---------------------------------------------------------------------高亮光标处单词，手动高亮单词
 ;;symbol-overlay
-(use-package symbol-overlay
+(use-package symbol-overlay 
+  :straight t
   :hook (prog-mode . symbol-overlay-mode))
-;;--------------------------------------------------------------------------------------easymotion
+;;-----------------------------------------------------------------------easymotion
 (use-package avy 
+  :straight t
   :config (setq avy-background t ;; 打关键字时给匹配结果加一个灰背景，更醒目
                 avy-all-windows t ;; 搜索所有 window，即所有「可视范围」
                 avy-timeout-seconds 0.3)) ;; 「关键字输入完毕」信号的触发时间
-;;-------------------------------------------------------------------------------------------rg搜索字符
-(use-package rg)
+;;-----------------------------------------------------------------------rg搜索字符
+(use-package rg 
+  :straight t)
 ;; Step 1: 创建或复用用于显示 *rg* 搜索结果的窗口
 (defun my-display-rg-results-buffer (buffer _alist)
   "将 *rg* 搜索结果缓冲区固定在右侧结果窗口，始终复用."
@@ -267,25 +285,28 @@
           (lambda ()
             (setq-local display-buffer-base-action
                         '((my-display-rg-file-buffer)))))
-;;---------------------------------------------------------------------------------------------自动居中显示窗口内容
-(use-package perfect-margin
+;;--------------------------------------------------------------------自动居中显示窗口内容
+(use-package perfect-margin 
+  :straight t
   :custom
   (perfect-margin-visible-width 128)
   :config
-  ;; enable perfect-mode
   (perfect-margin-mode t))
-;;-------------------------------------------------------------------------------------------dimm inactive window
-(use-package dimmer
-  :config (dimmer-mode)
+;;--------------------------------------------------------------------dimm inactive window
+(use-package dimmer 
+  :straight t
+  :config 
+  (dimmer-mode)
   (setq dimmer-percent 0.5))
-;;------------------------------------------------------------------------------------------vdiff
-(use-package vdiff
-  ;;:load-path "path/to/vdiff"
+;;----------------------------------------------------------------------vdiff
+(use-package vdiff 
+  :straight t
   :commands (vdiff-buffers vdiff-files)
   :config
   (define-key vdiff-mode-map (kbd "C-c") vdiff-mode-prefix-map))
-;;------------------------------------------------------------------------------------indent-guide
-(use-package indent-guide
+;;---------------------------------------------------------------------indent-guide
+(use-package indent-guide 
+  :straight t
   :config
   (setq indent-guide-char "│") ;; 可以用任何你喜欢的字符替换 "|"
   (set-face-background 'indent-guide-face nil) ;; 设置背景色为透明
@@ -299,17 +320,20 @@
     (or (nth 4 syntax)  ;; 如果在单行注释或块注释内
         (nth 3 syntax))))  ;; 如果在字符串内，也要避免影响字符串中的内容
 (setq indent-guide-inhibit-for-minor-modes #'my-indent-guide-inhibit-comments-and-blocks)
-;;-------------------------------------------------------------------------------------可以选中任意再高亮
-(use-package hl-anything
+;;----------------------------------------------------------------------可以选中任意再高亮
+(use-package hl-anything 
+  :straight t
   :config
   (hl-highlight-mode))
-;;---------------------------------------------------------------------------------------bookmark+,不同工程保存到不同书签
-(add-to-list 'load-path "~/.emacs.d/lisp/bookmark-plus/")
-(require 'bookmark+)
-;; 设定默认书签文件
-(setq bookmark-default-file "~/.emacs.d/user-bookmark/bookmarks") 
-;;--------------------------------------------------------------------------------------sticky scroll,顶部显示函数名
-(use-package topsy
+;;-----------------------------------------------------------------------bookmark+
+;;可以让不同工程保存到不同书签
+(use-package bookmark+
+  :straight t
+  :config
+  (setq bookmark-default-file "~/.emacs.d/user-bookmark/bookmarks"))
+;;-----------------------------------------------------------------------sticky scroll,顶部显示函数名
+(use-package topsy 
+  :straight t
   :hook ((prog-mode) . topsy-mode)
   :config
   (setq topsy-frame-delay 0.1           ;; 更新频率
@@ -324,16 +348,18 @@
     (setq header-line-format
           '((which-func-mode ("" which-func-format " ")))))
   (add-hook 'prog-mode-hook 'my-topsy-header-line))
-;;---------------------------------------------------------------------------------------ialign
+;;------------------------------------------------------------------------------ialign
 (use-package ialign
+  :straight t
   :config
   (setq ialign-auto-align t);; 自动对齐
   (setq ialign-default-align-char "=");; 设置默认对齐符号为 "="
   (setq ialign-tab-width 4);; 设置对齐时的制表符宽度
   (setq ialign-align-chars '("=" ":" ":="));; 设置多符号对齐
   (setq ialign-fix-first-column t));; 启用第一列对齐固定
-;;-----------------------------------------------------------------------------------------valign,含中文的表格能对齐
-(use-package valign
+;;------------------------------------------------------------------------------valign,含中文的表格能对齐
+(use-package valign 
+  :straight t
   :hook (org-mode . valign-mode)
   :config
   (setq valign-max-table-size 3000)  ;; 表格内容超过3000 字节,自动跳过处理表格
@@ -343,11 +369,14 @@
   (setq valign-resize-separator t)
   (setq valign-autorefresh-rate 1.5))  ;; 刷新
 
-;;--------------------------------------------------------------------------------------user-keybinding
+;;---------------------------------------------------------user-keybinding
 ;;put this at end of plugin
-(use-package which-key
+(use-package which-key 
+  :straight t
   :config (setq which-key-idle-delay 0))
 (which-key-mode)
 (require 'user-keybind)
-;;----------------------------------------------------------------------------------- 这段代码放在最后, 加载 Emacs 自动设置的变量
-(load custom-file 'noerror)
+
+;;--------------------------------------------------------- 这段代码放在最后, 加载 Emacs 自动设置的变量
+(when (file-exists-p custom-file)
+  (load custom-file))

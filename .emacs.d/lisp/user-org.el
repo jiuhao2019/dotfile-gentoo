@@ -1,12 +1,23 @@
 (use-package org
-  :commands (org-capture org-agenda)
+  :straight (org :type git
+		 :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
+		 :local-repo "org"
+		 :depth full
+		 :pre-build (straight-recipes-org-elpa--build)
+		 :build (:not autoloads)
+		 :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
+  :hook ((org-mode . org-indent-mode))
   :config
+  (setq org-ellipsis "▿ ")
+  ;;(setq org-ellipsis "▼")
+  ;; (setq org-hide-emphasis-markers t)
+  (setq org-use-speed-commands t)
   (setq org-enforce-todo-dependencies t)
   (setq org-startup-folded 'content);;默认折叠所有标题
   (setq org-cycle-include-plain-lists 'integrate) ;;将列表视为heading,也可以折叠
   (setq org-image-actual-width nil)
   (setq org-export-preserve-breaks t);;导出时保留原样换行
-  (setq org-ellipsis " ▼")
+  (setq org-ellipsis "▼")
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-html-validation-link nil)
@@ -17,9 +28,11 @@
 	'((sequence "TODO(t)" "PROCESS(p)" "|" "FINISHED(f@/!)" "DONE(d@/!)")))
   (setq org-tag-alist
 	'(("week" . ?1)
-	  ("work" . ?2))))
-;;
-(use-package org-bullets
+	  ("work" . ?2)))
+  ;; reduce space between header and tags
+  (setq org-tags-column 47))
+
+(use-package org-bullets :straight t
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●" "○" "●")))

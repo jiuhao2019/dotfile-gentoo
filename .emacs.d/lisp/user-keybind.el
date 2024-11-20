@@ -1,4 +1,4 @@
-(use-package hydra )
+(use-package hydra :straight t)
 ;; 
 (defhydra hydra-bookmark (:hint nil )
   "
@@ -143,7 +143,7 @@
   ("D"   vimish-fold-delete-all nil :color blue)
   ("r"   recentf nil :color blue))
 ;;
-(use-package general
+(use-package general :straight t
   :after evil
   :config
   (general-create-definer user/leader-keys

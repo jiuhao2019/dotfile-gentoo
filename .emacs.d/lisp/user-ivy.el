@@ -1,5 +1,4 @@
-
-(use-package ivy
+(use-package ivy :straight t
   :bind (("C-s" . swiper)
          :map ivy-minibuffer-map
          ("TAB" . ivy-alt-done))
@@ -12,7 +11,7 @@
   (with-eval-after-load 'counsel
     (setq ivy-initial-inputs-alist nil)))
 
-(use-package counsel
+(use-package counsel :straight t
   :bind (:map minibuffer-local-map
               ("C-r" . 'counsel-minibuffer-history))
   :after ivy
@@ -20,12 +19,12 @@
   :custom
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only))
 
-(use-package ivy-rich
+(use-package ivy-rich :straight t
   :after (ivy counsel)
   :config
   (ivy-rich-mode 1))
 
-(use-package ivy-prescient
+(use-package ivy-prescient :straight t
   :after counsel
   :custom
   (ivy-prescient-enable-filtering nil)
