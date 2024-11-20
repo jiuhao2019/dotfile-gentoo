@@ -8,16 +8,14 @@
 		 :files (:defaults "lisp/*.el" ("etc/styles/" "etc/styles/*")))
   :hook ((org-mode . org-indent-mode))
   :config
-  (setq org-ellipsis "▿ ")
-  ;;(setq org-ellipsis "▼")
-  ;; (setq org-hide-emphasis-markers t)
+  (setq org-ellipsis "▼")
+  (setq org-hide-emphasis-markers t)
   (setq org-use-speed-commands t)
   (setq org-enforce-todo-dependencies t)
   (setq org-startup-folded 'content);;默认折叠所有标题
   (setq org-cycle-include-plain-lists 'integrate) ;;将列表视为heading,也可以折叠
   (setq org-image-actual-width nil)
   (setq org-export-preserve-breaks t);;导出时保留原样换行
-  (setq org-ellipsis "▼")
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
   (setq org-html-validation-link nil)
