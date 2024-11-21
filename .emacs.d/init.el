@@ -1,78 +1,28 @@
-;;------------------------------------------------------proxy
-(setq url-proxy-services
-      '(("http" . "127.0.0.1:7890")
-        ("https" . "127.0.0.1:7890")))
-;;------------------------------------------------------staight.el
-(setq comp-deferred-compilation t);; 推迟编译，Emacs 启动时可以减少一些编译过程，从而加速启动时间，尤其是当你有很多包时。
-(setq straight-use-package-by-default t)
-(setq straight-emacsmirror-use-mirror t);;straight优先用社区提供的git仓库镜像源
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://radian-software.github.io/straight.el/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-;;---------------------------------------------------------Language Environment
-(set-language-environment "UTF-8")
-;;---------------------------------------------------------System Coding
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(setq bookmark-save-flag 1);;自动保存bookmark，内置插件
-(add-hook 'prog-mode-hook #'hs-minor-mode);;折叠块(注释，大括号)，内置插件
-;;------------------------------------------------------------------------------------------------font
-(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 133)
-(set-fontset-font t 'unicode (font-spec :family "FiraCode Nerd Font Mono" :size 15) nil 'prepend)
-(set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
-(set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
-;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
 ;;-------------------------------------------------------------------------------------------------window-gui
-;; Turn off mouse interface early in startup to avoid momentary display
-(when window-system
-  (menu-bar-mode -1) ;;disables menu bar
-  (tool-bar-mode -1) ;;disables toolbar
-  (scroll-bar-mode -1) ;;disables scroll bar
-  (tooltip-mode -1) ;;disables help in a pop-up window
-  (set-fringe-mode 10)          
-  (column-number-mode -1)     ;不显示列号
-  (global-eldoc-mode -1))      ;不在modeline显示光标处代码相关信息
+(tooltip-mode -1)                                 ;;disables help in a pop-up window
+(set-fringe-mode 10)          
+(column-number-mode -1)                           ;;不显示列号
+(global-eldoc-mode -1)                            ;;不在modeline显示光标处代码相关信息
 (setq initial-scratch-message "")
-(setq inhibit-startup-message t)        ; 禁用启动消息
-(setq inhibit-startup-screen t)         ; 禁用启动界面
-(setq inhibit-startup-echo-area-message t) ; 禁用 echo 区的提示信息
+(setq inhibit-startup-message t)                  ;; 禁用启动消息
+(setq inhibit-startup-screen t)                   ;; 禁用启动界面
+(setq inhibit-startup-echo-area-message t)        ;; 禁用 echo 区的提示信息
 (setq initial-message "")
-(setq-default indicate-buffer-boundaries 'none)  ; 不显示缓冲区边界信息
-(setq-default indicate-empty-lines nil)           ; 不显示空行指示
-(setq-default echo-keystrokes 0)               ; 不显示键盘输入的回显
-(setq message-log-max nil)                     ; 禁用消息缓冲区
-(setq echo-area-message-timeout 0)             ; 禁止显示回显消息
-(setq minibuffer-message-timeout 0)            ; 禁止 minibuffer 中的提示消息
-(setq ring-bell-function 'ignore)              ; 禁用铃声和提示
+(setq-default indicate-buffer-boundaries 'none)   ;; 不显示缓冲区边界信息
+(setq-default indicate-empty-lines nil)           ;; 不显示空行指示
+(setq-default echo-keystrokes 0)                  ;; 不显示键盘输入的回显
+(setq message-log-max nil)                        ;; 禁用消息缓冲区
+(setq echo-area-message-timeout 0)                ;; 禁止显示回显消息
+(setq minibuffer-message-timeout 0)               ;; 禁止 minibuffer 中的提示消息
+(setq ring-bell-function 'ignore)                 ;; 禁用铃声和提示
 (setq initial-buffer-choice t)
-(setq inhibit-default-init t)  ; 禁止加载默认初始化文件
-(setq garbage-collection-messages nil)  ; 禁用 GC 信息输出
-(setq-default frame-title-format "") ; 移除窗口标题中的初始化信息
-(setq gc-cons-threshold most-positive-fixnum) ;; 只在空闲时进行 GC ，最大程度避免 GC 停顿导致的卡顿
+(setq inhibit-default-init t)                     ;; 禁止加载默认初始化文件
+(setq garbage-collection-messages nil)            ;; 禁用 GC 信息输出
+(setq-default frame-title-format "")              ;; 移除窗口标题中的初始化信息
 ;; 从子进程一次读取的最大字节数，默认是 4K ，对于使用 JSON 通信的 LSP 协议来说，太小了
 ;; 调大这个值可以减少系统调用次数
 (setq read-process-output-max (* 1024 1024)) ;; 1Mb
-(setq warning-minimum-level :error)  ;; 只显示错误，忽略警告
+(setq warning-minimum-level :error)               ;; 只显示错误，忽略警告
 (setopt
  use-file-dialog nil
  use-dialog-box nil
@@ -97,6 +47,47 @@
  minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
  redisplay-skip-fontification-on-input t
  cursor-in-non-selected-windows nil)
+;;------------------------------------------------------proxy
+(setq url-proxy-services
+      '(("http" . "127.0.0.1:7890")
+        ("https" . "127.0.0.1:7890")))
+;;------------------------------------------------------staight.el
+(setq straight-use-package-by-default t)
+(setq straight-emacsmirror-use-mirror t);;straight优先用社区提供的git仓库镜像源
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://radian-software.github.io/straight.el/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'use-package)
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;;---------------------------------------------------------Language Environment
+(set-language-environment "UTF-8")
+;;---------------------------------------------------------System Coding
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq bookmark-save-flag 1);;自动保存bookmark，内置插件
+(add-hook 'prog-mode-hook #'hs-minor-mode);;折叠块(注释，大括号)，内置插件
+;;------------------------------------------------------------------------------------------------font
+(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 133)
+(set-fontset-font t 'unicode (font-spec :family "FiraCode Nerd Font Mono" :size 15) nil 'prepend)
+(set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
+(set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
+;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
 ;;----------------------------------------------------------------------------------自动备份
 ;;put auto-backup-file all to one folder
 (defvar --backup-directory (concat user-emacs-directory "backups"))
@@ -157,26 +148,31 @@
 (add-hook 'prog-mode-hook #'ligature-mode) ; 仅在编程模式中启用
 ;;-----------------------------------------------------------------------------all-the-icons
 ;;M-x all-the-icons-install-fonts
-(use-package all-the-icons)
+(use-package all-the-icons
+  :straight t)
 (use-package all-the-icons-dired
+  :straight t
   :requires all-the-icons
   :hook (dired-mode . all-the-icons-dired-mode))
 ;;----------------------------------------------------------------------------折叠块,vimish-fold,可以选中再折叠
-(use-package vimish-fold :straight t
+(use-package vimish-fold
+  :straight t
   :hook (prog-mode . vimish-fold-mode))
 ;;----------------------------------------------------------------------------使能加密,内置插件
 (require 'epa-file)
 (epa-file-enable)
-(setq epa-file-encrypt-to '("jiuhao")) ; 将 <your-key-id> 替换为您的 GPG 公钥 ID
-(setq epa-file-select-keys nil) ; 如果您想在加密时不手动选择密钥
-(setq epa-file-cache-passphrase-for-symmetric-encryption t) ; 缓存对称加密的密码
+(setq epa-file-encrypt-to '("jiuhao"))                      ;; 将 <your-key-id> 替换为您的 GPG 公钥 ID
+(setq epa-file-select-keys nil)                             ;; 如果您想在加密时不手动选择密钥
+(setq epa-file-cache-passphrase-for-symmetric-encryption t) ;; 缓存对称加密的密码
 ;;----------------------------------------------------------------------------让用户输入的密码不会因内存不足而换出到磁盘
-(use-package pinentry :straight t
+(use-package pinentry
+  :straight t
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 ;;-----------------------------------------------------------------------------undo-tree
-(use-package undo-tree :straight t
+(use-package undo-tree
+  :straight t
   :config (global-undo-tree-mode)
   :custom (undo-tree-visualizer-diff t)
   (undo-tree-history-directory-alist '(("." . "~/undo-emacs")))
