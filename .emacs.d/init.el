@@ -22,7 +22,8 @@
 ;; 从子进程一次读取的最大字节数，默认是 4K ，对于使用 JSON 通信的 LSP 协议来说，太小了
 ;; 调大这个值可以减少系统调用次数
 (setq read-process-output-max (* 1024 1024)) ;; 1Mb
-(setq warning-minimum-level :error)               ;; 只显示错误，忽略警告
+(setq warning-minimum-level :error)               ;;只显示错误，忽略警告
+(setq blink-cursor-blinks 1)  ;;设置光标闪烁次数
 (setopt
  use-file-dialog nil
  use-dialog-box nil
@@ -88,6 +89,8 @@
 (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
 (set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
 ;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
+;;(set-fontset-font t 'symbol (font-spec :family "wqy-zenhei" :size 15) nil 'prepend)
+;;(set-fontset-font t 'symbol (font-spec :family "arphicfonts" :size 15) nil 'prepend)
 ;;----------------------------------------------------------------------------------自动备份
 ;;put auto-backup-file all to one folder
 (defvar --backup-directory (concat user-emacs-directory "backups"))
@@ -170,14 +173,14 @@
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
-;;-----------------------------------------------------------------------------undo-tree
+;;-------------------------------------------------------------undo-tree
 (use-package undo-tree
   :straight t
   :config (global-undo-tree-mode)
   :custom (undo-tree-visualizer-diff t)
   (undo-tree-history-directory-alist '(("." . "~/undo-emacs")))
   (undo-tree-visualizer-timestamps t))
-;;------------------------------------------------------------------------------recentf,内置插件
+;;-------------------------------------------------------------recentf,内置插件
 (require 'recentf)
 (recentf-mode 1)
 ;; 设置最大保存的文件数
@@ -187,7 +190,7 @@
       '("/tmp/" "/ssh:" "/sudo:" "\\.gz$" "\\.zip$" "\\.tar$"))
 ;; 保存 recentf 列表到指定文件
 (setq recentf-save-file "~/.emacs.d/recentf")
-;;-------------------------------------------------------------------------------文件夹浏览
+;;-------------------------------------------------------------文件夹浏览
 (require 'dired)
 (setq dired-dwim-target t)
 (setq dired-listing-switches "-alGhv --group-directories-first")
@@ -195,7 +198,7 @@
 (setq dired-recursive-deletes 'always)
 (setq dired-kill-when-opening-new-dired-buffer t)
 (add-hook 'dired-mode-hook 'dired-hide-details-mode)
-;;--------------------------------------------------------------------------------拼音输入
+;;-------------------------------------------------------------拼音输入
 (use-package pyim 
  :straight t)
 (use-package pyim-basedict 
@@ -214,12 +217,12 @@
 (setq pyim-page-length 5)
 ;; 设置 pyim 默认使用的输入法策略。
 (pyim-default-scheme 'quanpin)
-;;----------------------------------------------------------------------elisp indent
+;;-------------------------------------------------------------elisp indent
 ;; (先光标放在一个模块里的首括号上,然后C-c C-q自动缩进elisp)
 (use-package aggressive-indent 
   :straight t
   :hook ( emacs-lisp-mode . aggressive-indent-mode ))
-;;----------------------------------------------------------------------格式化代码
+;;-------------------------------------------------------------格式化代码
 (use-package format-all 
   :straight t
   :commands format-all-mode
@@ -229,25 +232,25 @@
   (setq-default format-all-formatters
                 '(("C"     (astyle "--mode=c"))
                   ("Shell" (shfmt "-i" "4" "-ci")))))
-;;--------------------------------------------------------------------方便跳转，系统需要安装global
+;;-------------------------------------------------------------方便跳转，系统需要安装global
 (use-package ggtags 
   :straight t)
 (add-hook 'c-mode-common-hook
           (lambda ()
             (when (derived-mode-p 'c-mode 'c++-mode)
               (ggtags-mode 1))))
-;;---------------------------------------------------------------------高亮光标处单词，手动高亮单词
+;;-------------------------------------------------------------高亮光标处单词，手动高亮单词
 ;;symbol-overlay
 (use-package symbol-overlay 
   :straight t
   :hook (prog-mode . symbol-overlay-mode))
-;;-----------------------------------------------------------------------easymotion
+;;-------------------------------------------------------------easymotion
 (use-package avy 
   :straight t
   :config (setq avy-background t ;; 打关键字时给匹配结果加一个灰背景，更醒目
                 avy-all-windows t ;; 搜索所有 window，即所有「可视范围」
                 avy-timeout-seconds 0.3)) ;; 「关键字输入完毕」信号的触发时间
-;;-----------------------------------------------------------------------rg搜索字符
+;;-------------------------------------------------------------rg搜索字符
 (use-package rg 
   :straight t)
 ;; Step 1: 创建或复用用于显示 *rg* 搜索结果的窗口
@@ -284,31 +287,31 @@
           (lambda ()
             (setq-local display-buffer-base-action
                         '((my-display-rg-file-buffer)))))
-;;--------------------------------------------------------------------自动居中显示窗口内容
+;;---------------------------------------------------------自动居中显示窗口内容
 (use-package perfect-margin 
   :straight t
   :custom
   (perfect-margin-visible-width 128)
   :config
   (perfect-margin-mode t))
-;;--------------------------------------------------------------------dimm inactive window
+;;---------------------------------------------------------dimm inactive window
 (use-package dimmer 
   :straight t
   :config 
   (dimmer-mode)
   (setq dimmer-percent 0.5))
-;;----------------------------------------------------------------------vdiff
+;;---------------------------------------------------------vdiff
 (use-package vdiff 
   :straight t
   :commands (vdiff-buffers vdiff-files)
   :config
   (define-key vdiff-mode-map (kbd "C-c") vdiff-mode-prefix-map))
-;;---------------------------------------------------------------------indent-guide
+;;---------------------------------------------------------indent-guide
 (use-package indent-guide 
   :straight t
   :config
   (setq indent-guide-char "│") ;; 可以用任何你喜欢的字符替换 "|"
-  (set-face-background 'indent-guide-face nil) ;; 设置背景色为透明
+  (set-face-background 'indent-guide-face "#212337") ;; 设置背景色为透明
   (set-face-foreground 'indent-guide-face "#BBBBBB") ;; 设置前景色为灰色（可调）
   :hook (prog-mode . indent-guide-mode))
 
