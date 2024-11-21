@@ -97,25 +97,25 @@
 (if (not (file-exists-p --backup-directory))
     (make-directory --backup-directory t))
 (setq backup-directory-alist `(("." . ,--backup-directory)))
-(setq make-backup-files t               ; backup of a file the first time it is saved.
-      backup-by-copying nil             ; 默认重命名方式备份较复制方式更好
-      version-control t                 ; version numbers for backup files
-      delete-old-versions t             ; delete excess backup files silently
+(setq make-backup-files t               ;; backup of a file the first time it is saved.
+      backup-by-copying nil             ;; 默认重命名方式备份较复制方式更好
+      version-control t                 ;; version numbers for backup files
+      delete-old-versions t             ;; delete excess backup files silently
       delete-by-moving-to-trash t
-      kept-old-versions 5               ; oldest versions to keep when a new numbered backup is made (default: 2)
-      KEPT-NEW-VERSIONS 5               ; NEWEST VERSIONS TO KEEP WHEN A NEW NUMBERED BACKUP IS MADE (DEfault: 2)
-      auto-save-default t               ; auto-save every buffer that visits a file
-      auto-save-timeout 30              ; 每x秒自动保存
-      auto-save-interval 30)            ; 每输入x个字符自动保存
+      kept-old-versions 5               ;; oldest versions to keep when a new numbered backup is made (default: 2)
+      KEPT-NEW-VERSIONS 5               ;; NEWEST VERSIONS TO KEEP WHEN A NEW NUMBERED BACKUP IS MADE (DEfault: 2)
+      auto-save-default t               ;; auto-save every buffer that visits a file
+      auto-save-timeout 30              ;; 每x秒自动保存
+      auto-save-interval 30)            ;; 每输入x个字符自动保存
 ;;---------------------------------------------------------------------------theme
 (use-package doom-themes
   :straight t
   :config
-  (load-theme 'doom-moonlight t)              ;; 加载 doom-moonlight 主题
-  (doom-themes-visual-bell-config)            ;; 视觉铃声
-  (doom-themes-org-config)                    ;; org-mode 配色增强
-  (setq doom-themes-enable-bold t             ;; 启用粗体
-        doom-themes-enable-italic t))         ;; 启用斜体
+  (load-theme 'doom-moonlight t)        ;; 加载 doom-moonlight 主题
+  (doom-themes-visual-bell-config)      ;; 视觉铃声
+  (doom-themes-org-config)              ;; org-mode 配色增强
+  (setq doom-themes-enable-bold t       ;; 启用粗体
+        doom-themes-enable-italic t))   ;; 启用斜体
 ;;---------------------------------------------------------------------------modeline
 (use-package doom-modeline
   :straight t
