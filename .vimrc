@@ -75,7 +75,7 @@ let g:undotree_WindowLayout = 2
 nnoremap <silent> <Esc> :nohlsearch<cr>
 nnoremap <Leader>e :Lexplore<CR> 
 nnoremap <Leader>u :UndotreeToggle<CR> 
-nnoremap <Leader>d :Linediff<CR> 
+vnoremap <Leader>d :Linediff<CR> 
 nnoremap <Leader>D :LinediffReset<CR> 
 nnoremap <leader>1 :e ~/.vimrc<CR>
 nnoremap <leader>2 :e ~/.config/wezterm/font.lua<CR>
