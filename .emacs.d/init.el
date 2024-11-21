@@ -54,7 +54,7 @@
         ("https" . "127.0.0.1:7890")))
 ;;------------------------------------------------------staight.el
 (setq straight-use-package-by-default t)
-(setq straight-emacsmirror-use-mirror t);;straight优先用社区提供的git仓库镜像源
+;;(setq straight-emacsmirror-use-mirror t);;straight优先用社区提供的git仓库镜像源
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -305,6 +305,8 @@
   :straight t
   :commands (vdiff-buffers vdiff-files)
   :config
+  (setq vdiff-auto-refine t) ; 启用自动精细差异分析
+  (setq vdiff-subtraction-style 'better) ; 设置更清晰的差异显示样式
   (define-key vdiff-mode-map (kbd "C-c") vdiff-mode-prefix-map))
 ;;---------------------------------------------------------indent-guide
 (use-package indent-guide 
@@ -370,7 +372,6 @@
   (setq valign-enforce-alignment t)
   (setq valign-resize-separator t)
   (setq valign-autorefresh-rate 1.5))  ;; 刷新
-
 ;;---------------------------------------------------------user-keybinding
 ;;put this at end of plugin
 (use-package which-key 

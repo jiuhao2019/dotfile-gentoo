@@ -1,3 +1,6 @@
+
+let mapleader = " "
+"let maplocalleader = " "
 set hls
 "编码模式，避免乱码
 set fileencodings =utf-8,cp936,big5,latin1
@@ -32,7 +35,7 @@ set statusline=%t%m%r%h%w%=\ [%l\/%L:%v]
 set scrolloff =1
 set splitright
 set splitbelow
-set timeoutlen=150
+set timeoutlen=3000
 "不同模式光标形状
 " INSERT mode
 let &t_SI = "\<Esc>[5 q" . "\<Esc>]12;green\x7"
@@ -44,7 +47,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 set linespace=0
-set guifont=Fira\ Code:h12
+"set guifont=Fira\ Code:h12
 execute pathogen#infect()
 "----------------------------------netrw
 let g:netrw_browse_split = 4  " 打开文件在一个新的窗口
@@ -67,37 +70,18 @@ if has("persistent_undo")
   set undofile
 endif
 let g:undotree_WindowLayout = 2
-"----------------------------------------which-key
-let g:mapleader = "\<Space>"
-let g:maplocalleader = ','
+
 
 nnoremap <silent> <Esc> :nohlsearch<cr>
-
-let g:which_key_map = {}
-let g:which_key_map = {
-      \ 'e' : [':Lexplore'                     , 'netrw-toggle'],
-      \ 'u' : [':UndotreeToggle'               , 'undotree-toggle'],
-      \ 'j' : ['<C-W>j'                        , 'focus-down'],
-      \ 'k' : ['<C-W>k'                        , 'focus-up'],
-      \ 'h' : ['<C-W>h'                        , 'focus-left'],
-      \ 'l' : ['<C-W>l'                        , 'focus-right'],
-      \ 'J' : [':resize +5'                    , 'hight(+5)'],
-      \ 'K' : [':resize -5'                    , 'hight(-5)'],
-      \ 'H' : [':vertical resize -5'           , 'width(-5)'],
-      \ 'L' : [':vertical resize +5'           , 'width(+5)'],
-      \ }
-call which_key#register('<Space>', "g:which_key_map")
-nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
-
+nnoremap <Leader>e :Lexplore<CR> 
+nnoremap <Leader>u :UndotreeToggle<CR> 
+nnoremap <Leader>d :Linediff<CR> 
+nnoremap <Leader>D :LinediffReset<CR> 
 nnoremap <leader>1 :e ~/.vimrc<CR>
 nnoremap <leader>2 :e ~/.config/wezterm/font.lua<CR>
 nnoremap <leader>3 :e ~/.config/i3/config<CR>
-let g:which_key_map.1 = 'which_key_ignore'
-let g:which_key_map.2 = 'which_key_ignore'
-let g:which_key_map.3 = 'which_key_ignore'
+nnoremap <leader>4 :e ~/.emacs.d/init.el<CR>
 
- 
 augroup MyAutoCmdGroup
   autocmd!
   "光标保持不动超过一段时间时，自动保存所有修改的文件。
@@ -106,3 +90,12 @@ augroup MyAutoCmdGroup
   autocmd FocusGained,BufEnter * checktime
 augroup END
 
+if has("patch-8.1.0360")
+    set diffopt+=internal,algorithm:patience
+endif
+"How can I enable the patience diff algorithm when starting as vimdiff / git difftool / ... ?
+"In that case, add this snippet to your .vimrc:
+" started In Diff-Mode set diffexpr (plugin not loaded yet)
+if &diff
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+    endif
