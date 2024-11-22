@@ -103,7 +103,7 @@
       delete-old-versions t             ;; delete excess backup files silently
       delete-by-moving-to-trash t
       kept-old-versions 5               ;; oldest versions to keep when a new numbered backup is made (default: 2)
-      KEPT-NEW-VERSIONS 5               ;; NEWEST VERSIONS TO KEEP WHEN A NEW NUMBERED BACKUP IS MADE (DEfault: 2)
+      kept-new-versions 5               ;; NEWEST VERSIONS TO KEEP WHEN A NEW NUMBERED BACKUP IS MADE (DEfault: 2)
       auto-save-default t               ;; auto-save every buffer that visits a file
       auto-save-timeout 30              ;; 每x秒自动保存
       auto-save-interval 30)            ;; 每输入x个字符自动保存
@@ -126,10 +126,10 @@
   (doom-modeline-icon t)                         ;; 启用图标
   (doom-modeline-major-mode-icon t)              ;; 显示主模式图标
   (doom-modeline-minor-modes nil)                ;; 隐藏次模式信息
-  (doom-modeline-buffer-file-name-style 'truncate-upto-root) ;; 文件路径样式
   (doom-modeline-lsp t)                          ;; 显示 LSP 状态
   (doom-modeline-github t)                       ;; 显示 GitHub 状态
-  (doom-modeline-env-version t))                 ;; 显示当前环境版本
+  (doom-modeline-env-version t)                  ;; 显示当前环境版本
+  (doom-modeline-buffer-file-name-style 'truncate-upto-root)) ;; 文件路径样式
 ;;---------------------------------------------------------------------------配置内容很多的插件放在独立文件里
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (setq evil-want-C-u-scroll t)

@@ -102,6 +102,8 @@ nnoremap <Leader>1 :e ~/.vimrc<CR>
 nnoremap <Leader>2 :e ~/.config/wezterm/font.lua<CR>
 nnoremap <Leader>3 :e ~/.config/i3/config<CR>
 nnoremap <Leader>4 :e ~/.emacs.d/init.el<CR>
+nnoremap <Leader>r :browse oldfiles<CR>
+
 " used by DirDiffTree
 nmap <buffer> <silent> <Down> <C-N>o
 nmap <buffer> <silent> <Up>   <C-P>o
