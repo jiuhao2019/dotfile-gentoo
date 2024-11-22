@@ -68,16 +68,6 @@ if has("persistent_undo")
   set undofile
 endif
 let g:undotree_WindowLayout = 2
-"---------------------------------------------------keybinding
-nnoremap <silent> <Esc> :nohlsearch<CR>
-nnoremap <Leader>e :Lexplore<CR> 
-nnoremap <Leader>u :UndotreeToggle<CR> 
-vnoremap <Leader>d :Linediff<CR> 
-nnoremap <Leader>D :LinediffReset<CR> 
-nnoremap <Leader>1 :e ~/.vimrc<CR>
-nnoremap <Leader>2 :e ~/.config/wezterm/font.lua<CR>
-nnoremap <Leader>3 :e ~/.config/i3/config<CR>
-nnoremap <Leader>4 :e ~/.emacs.d/init.el<CR>
 "-------------------------------------------------------
 augroup MyAutoCmdGroup
   autocmd!
@@ -95,3 +85,24 @@ if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
 endif
 
+function! CmdDirDiffTree()
+    " 提示分别输入2个文件夹()
+    let one_folder = input('Enter one folder: ')
+    let another_folder = input('Enter another folder: ')
+    execute 'DirDiffTree ' . one_folder ' '. another_folder
+endfunction
+
+"---------------------------------------------------keybinding
+nnoremap <silent> <Esc> :nohlsearch<CR>
+nnoremap <Leader>e :Lexplore<CR> 
+nnoremap <Leader>u :UndotreeToggle<CR> 
+vnoremap <Leader>l :Linediff<CR> 
+nnoremap <Leader>L :LinediffReset<CR> 
+nnoremap <Leader>1 :e ~/.vimrc<CR>
+nnoremap <Leader>2 :e ~/.config/wezterm/font.lua<CR>
+nnoremap <Leader>3 :e ~/.config/i3/config<CR>
+nnoremap <Leader>4 :e ~/.emacs.d/init.el<CR>
+" used by DirDiffTree
+nmap <buffer> <silent> <Down> <C-N>o
+nmap <buffer> <silent> <Up>   <C-P>o
+nnoremap <Leader>d :call CmdDirDiffTree<CR> 
