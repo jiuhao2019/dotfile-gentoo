@@ -1,6 +1,5 @@
-
 let mapleader = " "
-"let maplocalleader = " "
+let maplocalleader = ","
 set hls
 "编码模式，避免乱码
 set fileencodings =utf-8,cp936,big5,latin1
@@ -35,14 +34,14 @@ set statusline=%t%m%r%h%w%=\ [%l\/%L:%v]
 set scrolloff =1
 set splitright
 set splitbelow
-set timeoutlen=3000
-"不同模式光标形状
-" INSERT mode
-let &t_SI = "\<Esc>[5 q" . "\<Esc>]12;green\x7"
-" REPLACE mode
-let &t_SR = "\<Esc>[3 q" . "\<Esc>]12;green\x7"
-" NORMAL mode
-let &t_EI = "\<Esc>[1 q" . "\<Esc>]12;green\x7"
+set timeoutlen=1000
+set showcmd
+"不同模式光标形状,颜色
+let &t_SI = "\<Esc>[2 q" . "\<Esc>]12;green\x7"    " insert mode
+let &t_SR = "\<Esc>[2 q" . "\<Esc>]12;red\x7"    " replace mode
+let &t_EI = "\<Esc>[2 q" . "\<Esc>]12;c0caf5\x7"    " normal mode
+autocmd VimLeave * silent !echo -ne "\033[0 q\033]12;white\x7"  " 退出vim恢复默认光标颜色样式
+
 if (has("termguicolors"))
  set termguicolors
 endif
@@ -55,7 +54,6 @@ let g:netrw_altv = 1          " 打开文件时使用竖向分割
 let g:netrw_winsize = 25      " 设置窗口大小
 let g:netrw_liststyle = 0     " 设置显示风格
 let g:netrw_banner = 0        " 不显示顶部提示信息
-
 "----------------------------------------colorscheme
 set background =dark
 colorscheme moonlight
@@ -70,26 +68,23 @@ if has("persistent_undo")
   set undofile
 endif
 let g:undotree_WindowLayout = 2
-
-
-nnoremap <silent> <Esc> :nohlsearch<cr>
+"---------------------------------------------------keybinding
+nnoremap <silent> <Esc> :nohlsearch<CR>
 nnoremap <Leader>e :Lexplore<CR> 
 nnoremap <Leader>u :UndotreeToggle<CR> 
 vnoremap <Leader>d :Linediff<CR> 
 nnoremap <Leader>D :LinediffReset<CR> 
-nnoremap <leader>1 :e ~/.vimrc<CR>
-nnoremap <leader>2 :e ~/.config/wezterm/font.lua<CR>
-nnoremap <leader>3 :e ~/.config/i3/config<CR>
-nnoremap <leader>4 :e ~/.emacs.d/init.el<CR>
-
+nnoremap <Leader>1 :e ~/.vimrc<CR>
+nnoremap <Leader>2 :e ~/.config/wezterm/font.lua<CR>
+nnoremap <Leader>3 :e ~/.config/i3/config<CR>
+nnoremap <Leader>4 :e ~/.emacs.d/init.el<CR>
+"-------------------------------------------------------
 augroup MyAutoCmdGroup
   autocmd!
-  "光标保持不动超过一段时间时，自动保存所有修改的文件。
-  autocmd CursorHold,CursorHoldI * silent! wall
-  "当重新聚焦 Vim 或切换到该缓冲区时，自动检查文件是否被外部更改，如果是，则重新加载文件。
-  autocmd FocusGained,BufEnter * checktime
+  autocmd CursorHold,CursorHoldI * silent! wall   "光标保持不动超过一段时间时，自动保存所有修改的文件。
+  autocmd FocusGained,BufEnter * checktime        "当重新聚焦 Vim 或切换到该缓冲区时，自动检查文件是否被外部更改，如果是，则重新加载文件。
 augroup END
-
+"-----------------------------------------------diff enhanced
 if has("patch-8.1.0360")
     set diffopt+=internal,algorithm:patience
 endif
@@ -98,4 +93,5 @@ endif
 " started In Diff-Mode set diffexpr (plugin not loaded yet)
 if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-    endif
+endif
+
