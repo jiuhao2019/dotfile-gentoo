@@ -366,7 +366,7 @@
   :straight t
   :hook (org-mode . valign-mode)
   :config
-  (setq valign-max-table-size 3000)  ;; 表格内容超过3000 字节,自动跳过处理表格
+  (setq valign-max-table-size 10000)  ;; 表格内容超过字节,自动跳过处理表格
   (setq valign-fancy-bar nil) ;;竖线全高，与文本对齐
   (setq valign-ellipses nil)  ;;省略号显示
   (setq valign-enforce-alignment t)
