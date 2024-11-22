@@ -13,6 +13,7 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (horizontal-scroll-bar-mode -1)
+(blink-cursor-mode 0)
 
 ;; 增加垃圾回收的阈值以加速启动
 (setq gc-cons-threshold most-positive-fixnum
