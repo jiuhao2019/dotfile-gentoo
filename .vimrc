@@ -1,8 +1,7 @@
 let mapleader = " "
 let maplocalleader = ","
 set hls
-"编码模式，避免乱码
-set fileencodings =utf-8,cp936,big5,latin1
+set fileencodings =utf-8,cp936,big5,latin1  "编码模式，避免乱码
 set encoding      =utf-8
 filetype on
 filetype indent on
@@ -18,17 +17,13 @@ set expandtab
 set autoindent
 set history =100
 set completeopt=menu,menuone,noselect
-"搜索字符跳转时不循环，要么到底，要么到顶
-set nowrapscan
-"不自动换行
-set nowrap
+set nowrapscan  "搜索字符跳转时不循环，要么到底，要么到顶
+set nowrap  "不自动换行
 set noautochdir
 set shortmess =aIt
-"不要自动生成各种备份文件
-set noswapfile
+set noswapfile  "不要自动生成各种备份文件
 set nobackup
-"一直显示底部状态栏,tab栏
-set laststatus =2
+set laststatus =2  "一直显示底部状态栏,tab栏
 set showtabline =0
 set statusline=%t%m%r%h%w%=\ [%l\/%L:%v]
 set scrolloff =1
@@ -46,7 +41,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 set linespace=0
-"set guifont=Fira\ Code:h12
+set guifont=Fira\ Code:h12
 execute pathogen#infect()
 "----------------------------------netrw
 let g:netrw_browse_split = 4  " 打开文件在一个新的窗口
@@ -107,4 +102,4 @@ nnoremap <Leader>r :browse oldfiles<CR>
 " used by DirDiffTree
 nmap <buffer> <silent> <Down> <C-N>o
 nmap <buffer> <silent> <Up>   <C-P>o
-nnoremap <Leader>d :call CmdDirDiffTree<CR> 
+nnoremap <Leader>d :call CmdDirDiffTree()<CR> 

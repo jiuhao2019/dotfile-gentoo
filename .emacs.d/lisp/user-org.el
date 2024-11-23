@@ -1,3 +1,5 @@
+;;
+;;----------------------------------------------------------------------------------------------org
 (use-package org
   :straight (org :type git
 		 :repo "https://git.savannah.gnu.org/git/emacs/org-mode.git"
@@ -27,17 +29,21 @@
   (setq org-tag-alist
 	'(("week" . ?1)
 	  ("work" . ?2)))
-  ;; reduce space between header and tags
-  (setq org-tags-column 47))
-
-(use-package org-bullets :straight t
+  (setq org-tags-column 47));; reduce space between header and tags
+;;
+;;----------------------------------------------------------------org-bullets
+(use-package org-bullets
+  :straight t
   :hook (org-mode . org-bullets-mode)
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●" "○" "●")))
-
+;;
 ;;关闭emacs后关闭后台gpg-agent，清除缓存的密码
 (add-hook 'kill-emacs-hook (defun personal-kill-gpg-agent ()
                              (shell-command "pkill gpg-agent")))
-(add-hook 'org-mode-hook (defun user/org-mode-setup() (org-indent-mode) (variable-pitch-mode 1)))
+(add-hook 'org-mode-hook (defun user/org-mode-setup()
+			   (org-indent-mode)
+			   (variable-pitch-mode 1)))
 ;;
 (provide 'user-org)
+;;
