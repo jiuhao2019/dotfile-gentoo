@@ -1,4 +1,7 @@
-(use-package hydra :straight t)
+;;
+;;------------------------------------------------------------hydra
+(use-package hydra
+  :straight t)
 ;; 
 (defhydra hydra-bookmark (:hint nil )
   "
@@ -14,7 +17,7 @@
   ("f"   bmkp-switch-bookmark-file-create nil :color blue)
   ("l"   bookmark-bmenu-list nil :color blue)
   ("d"   bookmark-delete nil :color blue))
-;;-------------------------------------------------------window
+;;------------------------------------------------------------------------------------------window
 (defhydra hydra-window (:hint nil )
   "
 [_h_] go left  [_H_] move to left   [_s_] fork-to-below [_+_] inc height [_=_] balance-win
@@ -39,9 +42,8 @@
   ("<"   evil-window-decrease-width)
   (">"   evil-window-increase-width)
   ("="   balance-windows))
-;;-------------------------------------------------------end window
-;;-------------------------------------------------------begin org
-;;  org-agenda
+;;
+;;--------------------------------------org-agenda
 (defhydra hydra-org-agenda (:hint nil )
   "
 [_s_] schedule-time
@@ -51,7 +53,8 @@
   ("s"   org-schedule nil :color blue)
   ("d"   org-deadline nil :color blue)
   ("t"   org-todo nil :color blue))
-;;  org-clock
+;;
+;;-------------------------------------org-clock
 (defhydra hydra-org-clock (:hint nil )
   "
 [_i_] clock-in
@@ -63,7 +66,8 @@
   ("o"   org-clock-out nil :color blue)
   ("r"   org-clock-report nil :color blue)
   ("t"   org-timestamp nil :color blue))
-;;  plain list
+;;
+;;------------------------------------------org-plain-list
 (defhydra hydra-org-plain-list (:hint nil )
   "
 [_i_] insert
@@ -75,7 +79,8 @@
   ("u"   org-shiftmetaup)
   ("-"   org-ctrl-c-minus)
   ("d"   org-shiftmetadown))
-;;  table
+;;
+;;-----------------------------------------org-table
 (defhydra hydra-org-table (:hint nil )
   "
 [_c_] create
@@ -85,7 +90,8 @@
   ("c"   org-table-create nil :color blue)
   ("1"   org-table-export-to-spreadsheet nil :color blue)
   ("2"   my/table-export nil :color blue))
-;;  link
+;;
+;;------------------------------------org-link
 (defhydra hydra-org-link (:hint nil )
   "
 [_o_] open
@@ -95,12 +101,15 @@
   ("o"   org-open-at-point nil :color blue)
   ("t"   org-toggle-link-display nil :color blue)
   ("i"   org-insert-link nil :color blue))
-;;  block
+;;
+;;----------------------------------------------------------org-block
 (defhydra hydra-org-block (:hint nil )
   "
 [_i_] insert-block
 "
   ("i"   org-insert-structure-template nil :color blue))
+;;
+;;-----------------------------------------------------org
 (defhydra hydra-org (:hint nil )
   "
 [_i_] inline-images [_a_] +agenda     [_t_] +table
@@ -118,7 +127,8 @@
   ("l"   hydra-org-link/body nil :color blue)
   ("b"   hydra-org-block/body nil :color blue)
   ("a"   hydra-org-agenda/body nil :color blue))
-;;-------------------------------------------------------end org
+;;
+;;-------------------------------------------------------------------------------------------misc
 (defhydra hydra-misc (:hint nil )
   "
   [_h_] hs-fold-all    [_c_] comment [_l_] select-hl-toggle  [_<TAB>_] vimish-fold-toggle 
@@ -143,7 +153,9 @@
   ("D"   vimish-fold-delete-all nil :color blue)
   ("r"   recentf nil :color blue))
 ;;
-(use-package general :straight t
+;;-----------------------------------------------------------general
+(use-package general
+  :straight t
   :after evil
   :config
   (general-create-definer user/leader-keys
@@ -158,5 +170,6 @@
     "o" '(hydra-org/body :which-key "+org")
     "w" '(hydra-window/body :which-key "+window")
     "m" '(hydra-bookmark/body :which-key "+bookmark")))
-
+;;
 (provide 'user-keybind)
+;;

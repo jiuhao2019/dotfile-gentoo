@@ -1,7 +1,11 @@
+;;
+;;------------------------------------------------------------对光标处操作
+;;提供了一种方法，对光标处操作，比如搜索光标处，翻译光标处等都可以套用
 (defun user/counsel-rg-at-point (str &optional from to)
   "搜索text,先v选中,或者默认光标处单词"
   (interactive
-   ;; 判断当前是否选中了一个region，如果选中则获取region的起、始位置，并赋值给from、to；如果没有选中region则获取当前单词的起、始位置并赋值给from、to
+   ;; 判断当前是否选中了一个region，如果选中则获取region的起、始位置，并赋值给from、to
+   ;; 如果没有选中region则获取当前单词的起、始位置并赋值给from、to
    (if (use-region-p)
        (list nil (region-beginning) (region-end))
      (let ((bounds (bounds-of-thing-at-point 'word)))
@@ -15,8 +19,8 @@
       (setq input-str (buffer-substring-no-properties from to))
       ;;调用swiper搜索该字符串
       ( counsel-rg input-str ))))
-
-;;--------------------------------------------------------switch themes
+;;
+;;---------------------------------------------------------------------------------------------switch themes
 (defun ap/load-doom-theme (theme)
   "Disable active themes and load a Doom theme."
   (interactive (list (intern (completing-read "Theme: "
@@ -34,7 +38,8 @@
                                                    (-map #'symbol-name))))))
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme theme 'no-confirm))
-;;--------------------------------------------------------end switch themes
+;;
+;;-----------------------------------------------------------------------------------table export to csv or excel
 ;;导出excel或csv方式1
 (defun org-table-export-to-spreadsheet (arg)
   "Export org table to spreadsheet formats, e.g. `ods', `xls', `xlsx'."
@@ -48,6 +53,6 @@
   (interactive)
   (org-table-export "/tmp/table.csv" "orgtbl-to-csv")
   (shell-command-to-string "localc --headless --infilter=\"CSV:44,34,76,,,,,,true,,,,false\" --convert-to \"xlsx:Calc MS Excel 2007 XML:UTF8\" /tmp/table.csv --outdir /tmp/"))
-
 ;;
 (provide 'user-func)
+;;

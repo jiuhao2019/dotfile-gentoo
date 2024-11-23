@@ -1,4 +1,7 @@
-(use-package lsp-mode :straight t
+;;
+;;----------------------------------------------------------------------------lsp-mode
+(use-package lsp-mode
+  :straight t
   :init
   (setq lsp-file-watch-threshold 500)
   (setq lsp-clients-clangd-executable "ccls"
@@ -8,17 +11,23 @@
   :config
   (setq lsp-completion-provider :none) ;; 阻止 lsp 重新设置 company-backend 而覆盖我们 yasnippet 的设置
   (setq lsp-headerline-breadcrumb-enable t)) 
-
-(use-package lsp-ui :straight t
+;;
+;;----------------------------------------------------------------------------------------lsp-ui
+(use-package lsp-ui
+  :straight t
   :config
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   (setq lsp-ui-doc-position 'top))
-
-(use-package lsp-ivy :straight t
+;;
+;;--------------------lsp-ivy
+(use-package lsp-ivy
+  :straight t
   :after (lsp-mode))
-
-(use-package company :straight t
+;;
+;;-------------------------------------------------------------------------------company
+(use-package company
+  :straight t
   :config
   (global-company-mode)
   (setq company-minimum-prefix-length 1) ; 只需敲 1 个字母就开始进行自动补全
@@ -27,8 +36,10 @@
   (setq company-show-numbers nil) ;; 给选项编号 (按快捷键 M-1、M-2 等等来进行选择).
   (setq company-selection-wrap-around nil)
   (setq company-transformers '(company-sort-by-occurrence))) ; 根据选择的频率进行排序
-
-(use-package yasnippet :straight t
+;;
+;;------------------------------------------------------------------------------------yasnippet
+(use-package yasnippet
+  :straight t
   :hook (prog-mode . yas-minor-mode)
   :config
   (yas-reload-all)
@@ -43,8 +54,11 @@
   (define-key yas-minor-mode-map [(tab)]        nil)
   (define-key yas-minor-mode-map (kbd "TAB")    nil)
   (define-key yas-minor-mode-map (kbd "<tab>")  nil))
-                   
-(use-package yasnippet-snippets :straight t
+;;
+;;--------------------------------yasnippet-snippets
+(use-package yasnippet-snippets
+  :straight t
   :after yasnippet)
-
+;;
 (provide 'user-lsp)
+;;
