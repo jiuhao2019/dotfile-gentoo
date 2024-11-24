@@ -26,7 +26,6 @@
 ;; 调大这个值可以减少系统调用次数
 (setq read-process-output-max (* 1024 1024)) ;; 1Mb
 (setq warning-minimum-level :error)               ;;只显示错误，忽略警告
-(setq blink-cursor-blinks 0)  ;;设置光标闪烁次数
 (setopt
  use-file-dialog nil
  use-dialog-box nil
