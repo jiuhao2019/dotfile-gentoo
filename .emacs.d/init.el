@@ -315,9 +315,14 @@
 (use-package perfect-margin 
   :straight t
   :custom
-  (perfect-margin-visible-width 128)
-  :config
-  (perfect-margin-mode t))
+  (perfect-margin-visible-width 128))
+(defun toggle-perfect-margin ()
+  "Enable perfect-margin only if there is a single window."
+  (if (= (length (window-list)) 1)
+      (perfect-margin-mode 1)
+    (perfect-margin-mode -1)))
+;; Add this to hook window changes
+(add-hook 'window-configuration-change-hook 'toggle-perfect-margin)
 ;;
 ;;--------------------------dimm inactive window
 (use-package dimmer 
