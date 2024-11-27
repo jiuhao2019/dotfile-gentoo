@@ -26,7 +26,7 @@
 ;; 调大这个值可以减少系统调用次数
 (setq read-process-output-max (* 1024 1024)) ;; 1Mb
 (setq warning-minimum-level :error)               ;;只显示错误，忽略警告
-(setopt
+(setopt 
  use-file-dialog nil
  use-dialog-box nil
  use-short-answers t
@@ -91,7 +91,7 @@
 (set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 133)
 (set-fontset-font t 'unicode (font-spec :family "FiraCode Nerd Font Mono" :size 15) nil 'prepend)
 (set-fontset-font t 'emoji (font-spec :family "Noto Color Emoji" :size 14) nil 'prepend)
-(set-fontset-font t 'symbol (font-spec :family "source-han-sans" :size 15) nil 'prepend)
+(set-fontset-font t 'symbol (font-spec :family "Source Han Sans CN" :size 15) nil 'prepend)
 ;;(set-fontset-font t 'symbol (font-spec :family "wqy-microhei" :size 15) nil 'prepend)
 ;;(set-fontset-font t 'symbol (font-spec :family "wqy-zenhei" :size 15) nil 'prepend)
 ;;(set-fontset-font t 'symbol (font-spec :family "arphicfonts" :size 15) nil 'prepend)
@@ -340,8 +340,8 @@
   :straight t
   :config
   (setq indent-guide-char "│") ;; 可以用任何你喜欢的字符替换 "|"
-  (set-face-background 'indent-guide-face "#212337") ;; 设置背景色为透明
-  (set-face-foreground 'indent-guide-face "#BBBBBB") ;; 设置前景色为灰色（可调）
+  (set-face-background 'indent-guide-face "#212337")
+  (set-face-foreground 'indent-guide-face "#BBBBBB")
   :hook (prog-mode . indent-guide-mode))
 
 (defun my-indent-guide-inhibit-comments-and-blocks ()

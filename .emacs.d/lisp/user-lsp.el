@@ -20,6 +20,14 @@
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   (setq lsp-ui-doc-position 'top))
 ;;
+;;---------------------------------------------------------------------------------ccls
+;;系统也需要安装 sudo emerge --ask dev-util/ccls
+(use-package ccls
+  :straight t
+  :after lsp-mode
+  :config
+  (setq ccls-executable "/usr/bin/ccls"))
+;;
 ;;--------------------lsp-ivy
 (use-package lsp-ivy
   :straight t
