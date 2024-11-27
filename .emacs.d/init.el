@@ -75,6 +75,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 (straight-use-package 'use-package)
+(setq straight-make-args '("-j5")) ;; 使用 8 个线程编译
+(setq native-comp-async-jobs-number 4) ;; 设置为 4 个线程
 ;;
 ;;------------------------------------Language Environment
 (set-language-environment "UTF-8")

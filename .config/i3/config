@@ -45,7 +45,7 @@ exec --no-startup-id xset s off
 exec --no-startup-id ibus-daemon -rxRd
 exec --no-startup-id dunst -conf ~/.config/dunst/dunstrc
 exec --no-startup-id clash&
-exec --no-startup-id ~/.config/i3/autoload.sh
+#exec --no-startup-id ~/.config/i3/autoload.sh
 exec --no-startup-id wezterm
 
 bindsym Caps_Lock --release exec --no-startup-id dunstify "CapsLock: `xset q | sed -n 's/^.*Caps Lock:\s*\(\S*\).*$/\1/p'`" -t 1500 -r 6 -u low
