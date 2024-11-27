@@ -20,3 +20,6 @@
 !/.vim/
 /.vim/.netrwhist
 !.astylerc
+
+!/.local/share/fonts/
+!/.local/share/fonts/*
